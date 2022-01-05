@@ -29,6 +29,8 @@ services:
        - cvat_db:/data/db
      networks:
        - cvat
+volumes:
+  cvat_db:
 
   cvat_redis:
     container_name: cvat_redis
