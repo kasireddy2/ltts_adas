@@ -20,14 +20,25 @@ SENDFILE_BACKEND = 'sendfile.backends.development'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#     'ENGINE': 'djongo',
+#     'NAME': 'new_adas',
+#     'HOST': '127.0.0.1',
+#     'PORT': 27017,
+#     }
+# }
 DATABASES = {
-    'default': {
-    'ENGINE': 'djongo',
-    'NAME': 'new_adas',
-    'HOST': '127.0.0.1',
-    'PORT': 27017,
-    }
+   'default': {
+   'ENGINE': 'djongo',
+   'NAME': 'new_adas',
+   'ENFORCE_SCHEMA':False,
+   'CLIENT':{
+       'host':'mongodb://root:example@local:27017/admin?authSource=admin'
 }
+}
+}
+ALLOWED_HOSTS=['*']
 
 
 
