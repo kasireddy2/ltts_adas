@@ -23,7 +23,7 @@ services:
      restart: always
      environment:
        MONGO_INITDB_ROOT_USERNAME: mongodadmin
-       MONGO_INITDB_ROOT_PASSWORD: Kasireddy@12
+       MONGO_INITDB_ROOT_PASSWORD: Kasireddy12
      restart: always
      volumes:
        - cvat_db:/data/db
