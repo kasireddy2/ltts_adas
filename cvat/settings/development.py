@@ -34,7 +34,7 @@ DATABASES = {
    'NAME': 'new_adas',
    'ENFORCE_SCHEMA':False,
    'CLIENT':{
-       'host':'mongodb://root:example@local:27017/admin?authSource=admin'
+       'host':'mongodb://mongodadmin:Kasireddy12@local:27017/admin?authSource=admin'
 }
 }
 }
