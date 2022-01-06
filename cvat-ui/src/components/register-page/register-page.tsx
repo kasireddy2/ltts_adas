@@ -52,7 +52,7 @@ function RegisterPageComponent(props: RegisterPageComponentProps & RouteComponen
                             userAgreements={userAgreements}
                             onSubmit={(registerData: RegisterData): void => {
                                 onRegister(
-                                    registerData.username,
+                                    registerData.email,
                                     registerData.firstName,
                                     registerData.lastName,
                                     registerData.email,

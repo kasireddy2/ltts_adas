@@ -51,7 +51,7 @@ from cvat.apps.engine.mime_types import mimetypes
 from cvat.apps.engine.models import (
     Job, StatusChoice, Task, Project, Review, Issue,
     Comment, StorageMethodChoice, ReviewStatus, StorageChoice, Image,
-    CredentialsTypeChoice, CloudProviderChoice
+    CredentialsTypeChoice, CloudProviderChoice, Segment
 )
 from cvat.apps.engine.models import CloudStorage as CloudStorageModel
 from cvat.apps.engine.serializers import (
@@ -67,6 +67,8 @@ from cvat.apps.engine.utils import av_scan_paths
 from cvat.apps.engine.backup import import_task
 from . import models, task
 from .log import clogger, slogger
+
+from allauth.account.models import EmailAddress
 
 import smtplib, ssl
 
@@ -958,9 +960,15 @@ class JobViewSet(viewsets.GenericViewSet,
             msg = MIMEMultipart('alternative')
             msg['From'] = EMAIL_HOST_USER
             mess = ''
+            print("hfhhfh", self.request.data)
         
             if assignee_id:
-                job_id = Job.objects.filter(assignee_id=assignee_id).values('id')
+                task_id =7
+                segment_id = Segment.objects.filter(task_id=task_id).values('id')[0].get('id')
+                job_id = Job.objects.filter(assignee_id=assignee_id, segment_id=segment_id).values('id')
+                print("///////////", job_id.values(), segment_id,)
+                
+                
                 assignee_queryset = User.objects.filter(id=assignee_id).values()[0]
                 assignee_email, assignee_username = assignee_queryset.get('email'),assignee_queryset.get('username')
                 msg['Subject'] = "Job assignment notification"
@@ -1264,7 +1272,21 @@ class UserViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
         """
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(request.user, context={ "request": request })
-        return Response(serializer.data)
+        
+        """code changes for email verification required by Savita and Kalaiselvi"""
+        emailid = serializer.data['email'] 
+        isverified = EmailAddress.objects.filter(email=emailid).values('email','verified')
+        response = Response(serializer.data)
+        print(response.data.get('is_superuser'))
+        if response.data.get('is_superuser'):
+            response.data['email_verification_required']= True
+            
+        try:
+            response.data['email_verification_required']= isverified[0].get('verified')
+        
+        except:
+            pass
+        return response
 
 class RedefineDescriptionField(FieldInspector):
     # pylint: disable=no-self-use

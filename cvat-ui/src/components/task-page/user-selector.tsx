@@ -21,6 +21,8 @@ interface Props {
     value: User | null;
     className?: string;
     onSelect: (user: User | null) => void;
+    status:any
+
 }
 
 const searchUsers = debounce(
@@ -44,7 +46,9 @@ const searchUsers = debounce(
 );
 
 export default function UserSelector(props: Props): JSX.Element {
-    const { value, className, onSelect } = props;
+    const {
+        value, className, onSelect, status,
+    } = props;
     const [searchPhrase, setSearchPhrase] = useState('');
     const [initialUsers, setInitialUsers] = useState<User[]>([]);
     const [users, setUsers] = useState<User[]>([]);
@@ -115,6 +119,7 @@ export default function UserSelector(props: Props): JSX.Element {
             ref={autocompleteRef}
             value={searchPhrase}
             placeholder='Select a user'
+            disabled={status === 'completed'}
             onSearch={handleSearch}
             onSelect={handleSelect}
             onBlur={onBlur}

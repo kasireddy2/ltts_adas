@@ -36,12 +36,15 @@
 
     function generateError(errorData) {
         if (errorData.response) {
-            const message = `${errorData.message}. ${JSON.stringify(errorData.response.data) || ''}.`;
+            let message = `${errorData.message}. ${JSON.stringify(errorData.response.data) || ''}.`;
+            if (errorData.response.status === 504) {
+                message = 'server is down .Please try later or check your connection';
+            }
             return new ServerError(message, errorData.response.status);
         }
-
+        const message = errorData || `${errorData.message}.`;
         // Server is unavailable (no any response)
-        const message = `${errorData.message}.`; // usually is "Error Network"
+        // const message = `${errorData.message}.`; // usually is "Error Network"
         return new ServerError(message, 0);
     }
 
@@ -258,10 +261,11 @@
                         proxy: config.proxy,
                     });
                 } catch (errorData) {
+                    if (errorData.response.status === 400) {
+                        throw generateError(errorData.response.data.non_field_errors['0']);
+                    }
                     //  return error.response;
                     throw generateError(errorData);
-                    // eslint-disable-next-line no-throw-literal
-                    // throw 'Request failed with status code 504';
                 }
 
                 if (authenticationResponse.headers['set-cookie']) {

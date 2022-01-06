@@ -19,7 +19,7 @@ const { Countdown } = Statistic;
 function EmailConfirmationPage(): JSX.Element {
     const linkRef = useRef();
     const onFinish = () => {
-        linkRef.current.click();
+        linkRef?.current.click();
     };
     return (
         <Layout>
@@ -27,7 +27,7 @@ function EmailConfirmationPage(): JSX.Element {
                 <Row justify='center' align='middle' id='email-confirmation-page-container'>
                     <Col>
                         <h1>Your email is confirmed</h1>
-                        <Countdown format='ss' title='Redirecting to login page after...' value={Date.now() + 1000 * 6} onFinish={onFinish} />
+                        <Countdown format='ss' title='Redirecting to login page after...' value={Date.now() + 1000 * 15} onFinish={onFinish} />
                         <Link to='/auth/login' ref={linkRef}>Or click this link</Link>
                     </Col>
                 </Row>

@@ -1,4 +1,4 @@
-// Copyright (C) 2020 Intel Corporation
+// Copyright (C) 2021 Intel Corporation
 //
 // SPDX-License-Identifier: MIT
 
@@ -9,10 +9,10 @@ import Button from 'antd/lib/button';
 import Input from 'antd/lib/input';
 import Checkbox from 'antd/lib/checkbox';
 
+import { Row, Col } from 'antd/lib/grid';
 import patterns from 'utils/validation-patterns';
 
 import { UserAgreement } from 'reducers/interfaces';
-import { Row, Col } from 'antd/lib/grid';
 
 export interface UserConfirmation {
     name: string;
@@ -34,18 +34,19 @@ interface Props {
     userAgreements: UserAgreement[];
     onSubmit(registerData: RegisterData): void;
 }
+// code commented by raju due to as of now not required this feature.
 
-function validateUsername(_: RuleObject, value: string): Promise<void> {
-    if (!patterns.validateUsernameLength.pattern.test(value)) {
-        return Promise.reject(new Error(patterns.validateUsernameLength.message));
-    }
+// function validateUsername(_: RuleObject, value: string): Promise<void> {
+//     if (!patterns.validateUsernameLength.pattern.test(value)) {
+//         return Promise.reject(new Error(patterns.validateUsernameLength.message));
+//     }
 
-    if (!patterns.validateUsernameCharacters.pattern.test(value)) {
-        return Promise.reject(new Error(patterns.validateUsernameCharacters.message));
-    }
+//     if (!patterns.validateUsernameCharacters.pattern.test(value)) {
+//         return Promise.reject(new Error(patterns.validateUsernameCharacters.message));
+//     }
 
-    return Promise.resolve();
-}
+//     return Promise.resolve();
+// }
 
 export const validatePassword: RuleRender = (): RuleObject => ({
     validator(_: RuleObject, value: string): Promise<void> {
@@ -116,9 +117,10 @@ function RegisterFormComponent(props: Props): JSX.Element {
             className='register-form'
         >
             <Row gutter={8}>
-                <Col span={12}>
+                <Col>
                     <Form.Item
-                        hasFeedback
+                        label='FirstName'
+                        // hasFeedback
                         name='firstName'
                         rules={[
                             {
@@ -134,9 +136,11 @@ function RegisterFormComponent(props: Props): JSX.Element {
                         />
                     </Form.Item>
                 </Col>
-                <Col span={12}>
+                {/* span={12} */}
+                <Col>
                     <Form.Item
-                        hasFeedback
+                        // hasFeedback
+                        label='LastName'
                         name='lastName'
                         rules={[
                             {
@@ -153,8 +157,10 @@ function RegisterFormComponent(props: Props): JSX.Element {
                     </Form.Item>
                 </Col>
             </Row>
-            <Form.Item
-                hasFeedback
+            {/* code commented by raju as per new requirement */}
+            {/* <Form.Item
+                label='Username'
+                // hasFeedback
                 name='username'
                 rules={[
                     {
@@ -170,10 +176,11 @@ function RegisterFormComponent(props: Props): JSX.Element {
                     prefix={<UserAddOutlined style={{ color: 'rgba(0, 0, 0, 0.25)' }} />}
                     placeholder='Username'
                 />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
-                hasFeedback
+                // hasFeedback
+                label='Email'
                 name='email'
                 rules={[
                     {
@@ -194,7 +201,8 @@ function RegisterFormComponent(props: Props): JSX.Element {
             </Form.Item>
 
             <Form.Item
-                hasFeedback
+                // hasFeedback
+                label='Password'
                 name='password1'
                 rules={[
                     {
@@ -211,7 +219,8 @@ function RegisterFormComponent(props: Props): JSX.Element {
             </Form.Item>
 
             <Form.Item
-                hasFeedback
+                // hasFeedback
+                label='Confirm Password'
                 name='password2'
                 dependencies={['password1']}
                 rules={[

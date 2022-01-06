@@ -1,9 +1,17 @@
-import { all, put, takeLatest, delay} from 'redux-saga/effects';
-import { AuthSagaActionTypes }from '../actions/auth-saga-actions';
+// Copyright (C) 2021 Intel Corporation
+//
+// SPDX-License-Identifier: MIT
+
+import {
+    all, put, takeLatest, delay,
+} from 'redux-saga/effects';
+import { AuthSagaActionTypes } from '../actions/auth-saga-actions';
 import getCore from '../cvat-core-wrapper';
+
 import isReachable from '../utils/url-checker';
-const cvat = getCore();
 import { ActionUnion, createAction } from '../utils/redux';
+
+const cvat = getCore();
 
 export const authSagaActions = {
     authorizeSuccess: (user: any) => createAction(AuthSagaActionTypes.AUTHORIZED_SUCCESS, { user }),
@@ -24,7 +32,8 @@ export const authSagaActions = {
         createAction(AuthSagaActionTypes.SWITCH_CHANGE_PASSWORD_DIALOG, { showChangePasswordDialog }),
     requestPasswordReset: () => createAction(AuthSagaActionTypes.REQUEST_PASSWORD_RESET),
     requestPasswordResetSuccess: () => createAction(AuthSagaActionTypes.REQUEST_PASSWORD_RESET_SUCCESS),
-    requestPasswordResetFailed: (error: any) => createAction(AuthSagaActionTypes.REQUEST_PASSWORD_RESET_FAILED, { error }),
+    requestPasswordResetFailed: (error: any) =>
+        createAction(AuthSagaActionTypes.REQUEST_PASSWORD_RESET_FAILED, { error }),
     resetPassword: () => createAction(AuthSagaActionTypes.RESET_PASSWORD),
     resetPasswordSuccess: () => createAction(AuthSagaActionTypes.RESET_PASSWORD_SUCCESS),
     resetPasswordFailed: (error: any) => createAction(AuthSagaActionTypes.RESET_PASSWORD_FAILED, { error }),
@@ -35,78 +44,82 @@ export const authSagaActions = {
             allowResetPassword,
         }),
     loadServerAuthActionsFailed: (error: any) => createAction(AuthSagaActionTypes.LOAD_AUTH_ACTIONS_FAILED, { error }),
-}
-
+};
 
 export type AuthSagaActions = ActionUnion<typeof authSagaActions>;
 
-    function* login(action:any):any{
+function* login(action: any): any {
     try {
-        yield cvat.server.login(action.payload.username,action.payload.password);
-        yield delay(1000)
+        yield cvat.server.login(action.payload.username, action.payload.password);
+        yield delay(1000);
         const users = yield cvat.users.get({ self: true });
         yield put(authSagaActions.loginSuccess(users[0]));
     } catch (error) {
         yield put(authSagaActions.loginFailed(error));
     }
+}
 
-    }
-
-    function* logout():any{
+function* logout(): any {
     try {
         yield cvat.server.logout();
         yield put(authSagaActions.logoutSuccess());
     } catch (error) {
         yield put(authSagaActions.logoutFailed(error));
     }
+}
 
+function* changePasswordAsync(action: any): any {
+    try {
+        yield cvat.server.changePassword(
+            action.payload.oldPassword,
+            action.payload.newPassword1,
+            action.payload.newPassword2,
+        );
+        yield put(authSagaActions.changePasswordSuccess());
+    } catch (error) {
+        yield put(authSagaActions.changePasswordFailed(error));
     }
+}
 
-    function* changePasswordAsync(action:any):any {
-        try {
-            yield cvat.server.changePassword(action.payload.oldPassword, action.payload.newPassword1,action.payload.newPassword2);
-            yield put(authSagaActions.changePasswordSuccess());
-        } catch (error) {
-            yield put(authSagaActions.changePasswordFailed(error));
-        }
-    };
+function* requestPasswordResetAsync(action: any) {
+    try {
+        yield cvat.server.requestPasswordReset(action.payload.email);
+        yield put(authSagaActions.requestPasswordResetSuccess());
+    } catch (error) {
+        yield put(authSagaActions.requestPasswordResetFailed(error));
+    }
+}
 
-    function* requestPasswordResetAsync (action: any){
-        console.log("request",action)
-        try {
-            yield cvat.server.requestPasswordReset(action.payload.email);
-            yield put(authSagaActions.requestPasswordResetSuccess());
-        } catch (error) {
-            yield put(authSagaActions.requestPasswordResetFailed(error));
-        }
-    };
+function* resetPasswordAsync(action: any) {
+    try {
+        yield cvat.server.resetPassword(
+            action.payload.newPassword1,
+            action.payload.newPassword2,
+            action.payload.uid,
+            action.payload.token,
+        );
+        yield put(authSagaActions.resetPasswordSuccess());
+    } catch (error) {
+        yield put(authSagaActions.resetPasswordFailed(error));
+    }
+}
 
-    function* resetPasswordAsync(action:any) {
-        console.log("reset",action)
-        try {
-            yield cvat.server.resetPassword(action.payload.newPassword1, action.payload.newPassword2, action.payload.uid, action.payload.token);
-            yield put(authSagaActions.resetPasswordSuccess());
-        } catch (error) {
-            yield put(authSagaActions.resetPasswordFailed(error));
-        }
-    };
+function* authorizedAsync(): any {
+    try {
+        yield cvat.server.authorized();
+        // const result =
+        //  if (result) {
+        //      const userInstance = (yield cvat.users.get({ self: true }))[0];
+        //      yield put(authSagaActions.authorizeSuccess(userInstance));
+        //  } else {
+        //      yield put(authSagaActions.authorizeSuccess(null));
+        //  }
+    } catch (error) {
+        yield put(authSagaActions.authorizeFailed(error));
+    }
+}
 
-    function* authorizedAsync():any{
-       try {
-            const result= yield cvat.server.authorized();
-            //  if (result) {
-            //      const userInstance = (yield cvat.users.get({ self: true }))[0];
-            //      yield put(authSagaActions.authorizeSuccess(userInstance));
-            //  } else {
-            //      yield put(authSagaActions.authorizeSuccess(null));
-            //  }
-         } catch (error) {
-             yield put(authSagaActions.authorizeFailed(error));
-         }
-     };
-
-
-    function* loadAuthActionsAsync():any{
+function* loadAuthActionsAsync(): any {
     // dispatch(authSagaActions.loadServerAuthActions());
     try {
         const promises: Promise<boolean>[] = [
@@ -119,15 +132,14 @@ export type AuthSagaActions = ActionUnion<typeof authSagaActions>;
     } catch (error) {
         yield put(authSagaActions.loadServerAuthActionsFailed(error));
     }
-};
+}
 
-
-    function* registerAsync(action:any):any{
+function* registerAsync(action: any): any {
     // dispatch(authSagaActions.register());
 
     try {
         const user = yield cvat.server.register(
-            action.payload.username,
+            action.payload.email,
             action.payload.firstName,
             action.payload.lastName,
             action.payload.email,
@@ -140,19 +152,17 @@ export type AuthSagaActions = ActionUnion<typeof authSagaActions>;
     } catch (error) {
         yield put(authSagaActions.registerFailed(error));
     }
-};
-
+}
 
 export function* authWatcher() {
-    yield all ([
+    yield all([
         takeLatest(AuthSagaActionTypes.LOGOUT, logout),
         takeLatest(AuthSagaActionTypes.LOGIN, login),
-        takeLatest(AuthSagaActionTypes.CHANGE_PASSWORD,changePasswordAsync),
-        takeLatest(AuthSagaActionTypes.REQUEST_PASSWORD_RESET,requestPasswordResetAsync),
-        takeLatest(AuthSagaActionTypes.RESET_PASSWORD,resetPasswordAsync),
-        takeLatest(AuthSagaActionTypes.LOAD_AUTH_ACTIONS,loadAuthActionsAsync),
-        takeLatest(AuthSagaActionTypes.AUTHORIZED_SUCCESS,authorizedAsync),
-        takeLatest(AuthSagaActionTypes.REGISTER,registerAsync)
-
-    ])
+        takeLatest(AuthSagaActionTypes.CHANGE_PASSWORD, changePasswordAsync),
+        takeLatest(AuthSagaActionTypes.REQUEST_PASSWORD_RESET, requestPasswordResetAsync),
+        takeLatest(AuthSagaActionTypes.RESET_PASSWORD, resetPasswordAsync),
+        takeLatest(AuthSagaActionTypes.LOAD_AUTH_ACTIONS, loadAuthActionsAsync),
+        takeLatest(AuthSagaActionTypes.AUTHORIZED_SUCCESS, authorizedAsync),
+        takeLatest(AuthSagaActionTypes.REGISTER, registerAsync),
+    ]);
 }

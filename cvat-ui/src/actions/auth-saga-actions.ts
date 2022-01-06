@@ -1,5 +1,7 @@
+// Copyright (C) 2021 Intel Corporation
+//
+// SPDX-License-Identifier: MIT
 import { UserConfirmation } from '../components/register-page/register-form';
-
 
 // ... addToDo ...
 export enum AuthSagaActionTypes {
@@ -29,58 +31,57 @@ export enum AuthSagaActionTypes {
     LOAD_AUTH_ACTIONS_FAILED = 'LOAD_AUTH_ACTIONS_FAILED',
 }
 
-export function loginAsync(username:string,password:string) {
-  return {
+export function loginAsync(username: string, password: string) {
+    return {
         type: AuthSagaActionTypes.LOGIN,
-        payload:{username,password}
+        payload: { username, password },
     };
 }
 
 export function logoutAsync() {
     return {
-    type: AuthSagaActionTypes.LOGOUT,
-    // payload:{}
-        };
-    }
-
-export function changePasswordAsync(oldPassword: string,
-    newPassword1: string,
-    newPassword2: string,){
-    return {
-        type:AuthSagaActionTypes.CHANGE_PASSWORD,
-        payload:{oldPassword,newPassword1,newPassword2}
-    }
+        type: AuthSagaActionTypes.LOGOUT,
+        // payload:{}
+    };
 }
 
-export function requestPasswordResetAsync(email:string){
-    return{
-        type:AuthSagaActionTypes.REQUEST_PASSWORD_RESET,
-        payload:{email}
-    }
-}
-
-export function resetPasswordAsync(
+export function changePasswordAsync(
+    oldPassword: string,
     newPassword1: string,
     newPassword2: string,
-    uid: string,
-    token: string){
-    return{
-        type:AuthSagaActionTypes.RESET_PASSWORD,
-        payload:{newPassword1,newPassword2,uid,token}
-    }
+) {
+    return {
+        type: AuthSagaActionTypes.CHANGE_PASSWORD,
+        payload: { oldPassword, newPassword1, newPassword2 },
+    };
 }
 
-export function authorizedAsync(){
-    return{
-        type:AuthSagaActionTypes.AUTHORIZED_SUCCESS
-    }
+export function requestPasswordResetAsync(email: string) {
+    return {
+        type: AuthSagaActionTypes.REQUEST_PASSWORD_RESET,
+        payload: { email },
+    };
 }
 
-export function loadAuthActionsAsync(){
-    return{
-        type:AuthSagaActionTypes.LOAD_AUTH_ACTIONS,
+export function resetPasswordAsync(newPassword1: string, newPassword2: string, uid: string, token: string) {
+    return {
+        type: AuthSagaActionTypes.RESET_PASSWORD,
+        payload: {
+            newPassword1, newPassword2, uid, token,
+        },
+    };
+}
 
-    }
+export function authorizedAsync() {
+    return {
+        type: AuthSagaActionTypes.AUTHORIZED_SUCCESS,
+    };
+}
+
+export function loadAuthActionsAsync() {
+    return {
+        type: AuthSagaActionTypes.LOAD_AUTH_ACTIONS,
+    };
 }
 
 export function registerAsync(
@@ -91,10 +92,17 @@ export function registerAsync(
     password1: string,
     password2: string,
     confirmations: UserConfirmation[],
-){
-    return{
-        type:AuthSagaActionTypes.REGISTER,
-        payload:{username,firstName,lastName,email,password1,password2,confirmations}
-    }
+) {
+    return {
+        type: AuthSagaActionTypes.REGISTER,
+        payload: {
+            username,
+            firstName,
+            lastName,
+            email,
+            password1,
+            password2,
+            confirmations,
+        },
+    };
 }
-

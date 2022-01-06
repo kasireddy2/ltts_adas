@@ -10,9 +10,12 @@ from rest_auth.views import (
 from allauth.account.views import ConfirmEmailView, EmailVerificationSentView
 from allauth.account import app_settings as allauth_settings
 
-from cvat.apps.authentication.views import SigningView, RegisterView
-from django.contrib.auth.models import User
+from cvat.apps.authentication.views import SigningView, RegisterViewEx
+#from django.contrib.auth.models import User
 from cvat.apps.authentication.views import *
+
+
+
 urlpatterns = [
     path('login', LoginView.as_view(), name='rest_login'),
     path('logout', LogoutView.as_view(), name='rest_logout'),
@@ -22,13 +25,14 @@ urlpatterns = [
 
 if settings.DJANGO_AUTH_TYPE == 'BASIC':
     urlpatterns += [
-        path('register', RegisterView.as_view(), name='rest_register'),
+        path('register', RegisterViewEx.as_view(), name='rest_register'),
         path('password/reset', PasswordResetView.as_view(),
             name='rest_password_reset'),
         path('password/reset/confirm', PasswordResetConfirmView.as_view(),
             name='rest_password_reset_confirm'),
         path('password/change', PasswordChangeView.as_view(),
             name='rest_password_change'),
+        #path('verify-email', VerifyEmailView.as_view(), name='rest_verify_email')
         
     ]
     if allauth_settings.EMAIL_VERIFICATION != \
