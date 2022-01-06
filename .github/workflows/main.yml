@@ -79,27 +79,27 @@ jobs:
 #             ${{ github.workspace }}/.coverage
 #             ${{ github.workspace }}/lcov.info
 
-#   E2E_testing:
-#     if: |
-#       github.event.pull_request.draft == false &&
-#       !startsWith(github.event.pull_request.title, '[WIP]') &&
-#       !startsWith(github.event.pull_request.title, '[Dependent]')
-#     runs-on: ubuntu-latest
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         specs: ['actions_tasks', 'actions_tasks2', 'actions_tasks3', 'actions_objects', 'actions_objects2', 'actions_users', 'actions_projects_models', 'canvas3d_functionality', 'canvas3d_functionality_2', 'issues_prs', 'issues_prs2']
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Getting SHA from the default branch
-#         id: get-sha
-#         run: |
-#           URL_get_default_branch="https://api.github.com/repos/${{ github.repository }}"
-#           DEFAULT_BRANCH=$(curl -s -X GET -G ${URL_get_default_branch} | jq -r '.default_branch')
-#           URL_get_sha_default_branch="https://api.github.com/repos/${{ github.repository }}/git/ref/heads/${DEFAULT_BRANCH}"
-#           SHA=$(curl -s -X GET -G ${URL_get_sha_default_branch}  | jq .object.sha | tr -d '"')
-#           echo ::set-output name=default_branch::${DEFAULT_BRANCH}
-#           echo ::set-output name=sha::${SHA}
+  E2E_testing:
+    if: |
+      github.event.pull_request.draft == false &&
+      !startsWith(github.event.pull_request.title, '[WIP]') &&
+      !startsWith(github.event.pull_request.title, '[Dependent]')
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        specs: ['actions_tasks', 'actions_tasks2', 'actions_tasks3', 'actions_objects', 'actions_objects2', 'actions_users', 'actions_projects_models', 'canvas3d_functionality', 'canvas3d_functionality_2', 'issues_prs', 'issues_prs2']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Getting SHA from the default branch
+        id: get-sha
+        run: |
+          URL_get_default_branch="https://api.github.com/repos/${{ github.repository }}"
+          DEFAULT_BRANCH=$(curl -s -X GET -G ${URL_get_default_branch} | jq -r '.default_branch')
+          URL_get_sha_default_branch="https://api.github.com/repos/${{ github.repository }}/git/ref/heads/${DEFAULT_BRANCH}"
+          SHA=$(curl -s -X GET -G ${URL_get_sha_default_branch}  | jq .object.sha | tr -d '"')
+          echo ::set-output name=default_branch::${DEFAULT_BRANCH}
+          echo ::set-output name=sha::${SHA}
       - name: Waiting a cache creation in the default branch
         run: |
           URL_runs="https://api.github.com/repos/${{ github.repository }}/actions/workflows/cache.yml/runs"
