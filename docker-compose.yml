@@ -17,20 +17,34 @@ services:
 #       - cvat_db:/var/lib/postgresql/data
 #     networks:
 #       - cvat
+#   cvat_db:
+#      container_name: cvat_db
+#      image: mongo
+#      restart: always
+#      environment:
+#        MONGO_INITDB_ROOT_USERNAME: mongodadmin
+#        MONGO_INITDB_ROOT_PASSWORD: Kasireddy12
+#      restart: always
+#      volumes:
+#        - cvat_db:/data/db
+#      networks:
+#        - cvat
+# volumes:
+#   cvat_db:
   cvat_db:
-     container_name: cvat_db
-     image: mongo
-     restart: always
-     environment:
-       MONGO_INITDB_ROOT_USERNAME: mongodadmin
-       MONGO_INITDB_ROOT_PASSWORD: Kasireddy12
-     restart: always
-     volumes:
-       - cvat_db:/data/db
-     networks:
-       - cvat
-volumes:
-  cvat_db:
+    container_name: cvat_db
+    image: mongo
+    restart: always
+    environment:
+        - MONGO_INITDB_ROOT_USERNAME=admin
+        - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - "27017:27017"
+    volumes:
+      - "$PWD/mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+      - cvat_db:/data/db
+
+    command: mongod
 
   cvat_redis:
     container_name: cvat_redis
