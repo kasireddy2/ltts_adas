@@ -61,7 +61,7 @@ jobs:
           context: .
           file: ./Dockerfile
           cache-from: type=local,src=/tmp/cvat_cache_server
-          tags: openvino/cvat_server:latest
+          tags: adasdevops/cvat_server:latest
           load: true
       - name: Running unit tests
         env:
