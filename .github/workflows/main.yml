@@ -173,13 +173,13 @@ jobs:
           SERVER_IMAGE_REPO: 'cvat_server'
           UI_IMAGE_REPO: 'cvat_ui'
         run: |
-          docker tag "${DOCKERHUB_WORKSPACE}/${SERVER_IMAGE_REPO}:latest" "${DOCKERHUB_WORKSPACE}/${SERVER_IMAGE_REPO}:tag"
+          docker tag  "${DOCKERHUB_WORKSPACE}/${SERVER_IMAGE_REPO}:tag"
           docker push "${DOCKERHUB_WORKSPACE}/${SERVER_IMAGE_REPO}:tag"
-          docker push "${DOCKERHUB_WORKSPACE}/${SERVER_IMAGE_REPO}:latest"
+#          docker push "${DOCKERHUB_WORKSPACE}/${SERVER_IMAGE_REPO}:latest"
 
-          docker tag "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:latest" "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:tag"
+          docker tag "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:tag"
           docker push "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:tag"
-          docker push "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:latest"
+#          docker push "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:latest"
       - name: Instrumentation of the code then rebuilding the CVAT UI
         if: github.ref == 'refs/heads/develop'
         run: |
