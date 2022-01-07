@@ -8,10 +8,10 @@ import { Col, Row } from 'antd/lib/grid';
 import Layout from 'antd/lib/layout';
 import Statistic from 'antd/lib/statistic';
 import './styles.scss';
+import FooterDrawer from 'components/login-page/intel-footer-drawer';
 
 const { Content } = Layout;
 const { Countdown } = Statistic;
-
 /**
  * Component for displaying email confirmation message and then redirecting to the login page
  */
@@ -26,12 +26,13 @@ function EmailConfirmationPage(): JSX.Element {
             <Content>
                 <Row justify='center' align='middle' id='email-confirmation-page-container'>
                     <Col>
-                        <h1>Your email is confirmed</h1>
+                        <h1>Your email is Not-confirmed</h1>
                         <Countdown format='ss' title='Redirecting to login page after...' value={Date.now() + 1000 * 15} onFinish={onFinish} />
                         <Link to='/auth/login' ref={linkRef}>Or click this link</Link>
                     </Col>
                 </Row>
             </Content>
+            <FooterDrawer />
         </Layout>
     );
 }

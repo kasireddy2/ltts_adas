@@ -261,8 +261,7 @@ function RightGroup(props: Props): JSX.Element {
                     className='cvat-workspace-selector'
                     onChange={changeWorkspace}
                     value={workspace}
-                    // disabled={role === 'annotator' || role === 'observer' || role === undefined}
-                    disabled={role === 'test'}
+                    disabled={role === 'annotator' || role === 'observer' || role === undefined || role === 'user'}
                 >
                     {Object.values(Workspace).map((ws) => {
                         if (jobInstance.task.dimension === DimensionType.DIM_3D) {

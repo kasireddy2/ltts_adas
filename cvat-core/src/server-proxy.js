@@ -43,8 +43,6 @@
             return new ServerError(message, errorData.response.status);
         }
         const message = errorData || `${errorData.message}.`;
-        // Server is unavailable (no any response)
-        // const message = `${errorData.message}.`; // usually is "Error Network"
         return new ServerError(message, 0);
     }
 
@@ -264,7 +262,6 @@
                     if (errorData.response.status === 400) {
                         throw generateError(errorData.response.data.non_field_errors['0']);
                     }
-                    //  return error.response;
                     throw generateError(errorData);
                 }
 
