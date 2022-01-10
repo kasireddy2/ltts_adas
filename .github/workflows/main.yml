@@ -61,7 +61,7 @@ jobs:
           context: .
           file: ./Dockerfile
           cache-from: type=local,src=/tmp/cvat_cache_server
-          tags: adasdevops/cvat_server
+          tags: adasdevops/cvat_server:latest
           load: true
 #       - name: Running unit tests
 #         env:
@@ -144,7 +144,7 @@ jobs:
           context: .
           file: ./Dockerfile
           cache-from: type=local,src=/tmp/cvat_cache_server
-          tags: openvino/cvat_server
+          tags: adasdevops/cvat_server:latest
           load: true
       - name: Building CVAT UI image
         uses: docker/build-push-action@v2
@@ -152,7 +152,7 @@ jobs:
           context: .
           file: ./Dockerfile.ui
           cache-from: type=local,src=/tmp/cvat_cache_ui
-          tags: openvino/cvat_ui:latest
+          tags: adasdevops/cvat_server:latest
           load: true
 
       - name: Instrumentation of the code then rebuilding the CVAT UI
