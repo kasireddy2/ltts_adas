@@ -152,7 +152,7 @@ jobs:
           context: .
           file: ./Dockerfile.ui
           cache-from: type=local,src=/tmp/cvat_cache_ui
-          tags: adasdevops/cvat_server:latest
+          tags: adasdevops/cvat_ui:latest
           load: true
 
       - name: Instrumentation of the code then rebuilding the CVAT UI
@@ -237,7 +237,7 @@ jobs:
           context: .
           file: ./Dockerfile
           cache-from: type=local,src=/tmp/cvat_cache_server
-          tags: openvino/cvat_server
+          tags: openvino/cvat_server:latest
           load: true
       - name: Downloading coverage results
         uses: actions/download-artifact@v2
