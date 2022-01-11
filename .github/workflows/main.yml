@@ -285,4 +285,4 @@ jobs:
 
           docker tag "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:latest" "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:tag"
           docker push "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:tag"
-          docker push "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:tag"
+          docker push "${DOCKERHUB_WORKSPACE}/${UI_IMAGE_REPO}:latest"
