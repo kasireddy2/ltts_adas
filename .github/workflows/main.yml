@@ -62,7 +62,7 @@ jobs:
           file: ./Dockerfile
           cache-from: type=local,src=/tmp/cvat_cache_server
           tags: adasdevops/cvat_server:latest
-           load: true
+          load: true
 #       - name: Running unit tests
 #         env:
 #           HOST_COVERAGE_DATA_DIR: ${{ github.workspace }}
