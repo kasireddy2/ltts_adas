@@ -237,7 +237,7 @@ jobs:
           context: .
           file: ./Dockerfile
           cache-from: type=local,src=/tmp/cvat_cache_server
-          tags: openvino/cvat_server:latest
+          tags: adasdevops/cvat_server:latest
           load: true
       - name: Downloading coverage results
         uses: actions/download-artifact@v2
