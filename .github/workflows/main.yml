@@ -63,13 +63,13 @@ jobs:
           cache-from: type=local,src=/tmp/cvat_cache_server
           tags: adasdevops/cvat_server:latest
           load: true
-#       - name: Running unit tests
-#         env:
-#           HOST_COVERAGE_DATA_DIR: ${{ github.workspace }}
-#           CONTAINER_COVERAGE_DATA_DIR: "/coverage_data"
-#         run: |
-#           docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.ci.yml run cvat_ci /bin/bash -c 'coverage run -a manage.py test cvat/apps utils/cli && mv .coverage ${CONTAINER_COVERAGE_DATA_DIR}'
-#           docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.ci.yml run cvat_ci /bin/bash -c 'cd cvat-data && npm ci && cd ../cvat-core && npm ci && npm run test && mv ./reports/coverage/lcov.info ${CONTAINER_COVERAGE_DATA_DIR} && chmod a+rwx ${CONTAINER_COVERAGE_DATA_DIR}/lcov.info'
+      - name: Running unit tests
+        env:
+          HOST_COVERAGE_DATA_DIR: ${{ github.workspace }}
+          CONTAINER_COVERAGE_DATA_DIR: "/coverage_data"
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.ci.yml run cvat_ci /bin/bash -c 'coverage run -a manage.py test cvat/apps utils/cli && mv .coverage ${CONTAINER_COVERAGE_DATA_DIR}'
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.ci.yml run cvat_ci /bin/bash -c 'cd cvat-data && npm ci && cd ../cvat-core && npm ci && npm run test && mv ./reports/coverage/lcov.info ${CONTAINER_COVERAGE_DATA_DIR} && chmod a+rwx ${CONTAINER_COVERAGE_DATA_DIR}/lcov.info'
       - name: Uploading code coverage results as an artifact
         if: github.ref == 'refs/heads/develop'
         uses: actions/upload-artifact@v2
@@ -87,8 +87,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-#       matrix:
-#         specs: ['actions_tasks', 'actions_tasks2', 'actions_tasks3', 'actions_objects', 'actions_objects2', 'actions_users', 'actions_projects_models', 'canvas3d_functionality', 'canvas3d_functionality_2', 'issues_prs', 'issues_prs2']
+      matrix:
+        specs: ['actions_tasks', 'actions_tasks2', 'actions_tasks3', 'actions_objects', 'actions_objects2', 'actions_users', 'actions_projects_models', 'canvas3d_functionality', 'canvas3d_functionality_2', 'issues_prs', 'issues_prs2']
     steps:
       - uses: actions/checkout@v2
       - name: Getting SHA from the default branch
@@ -161,32 +161,32 @@ jobs:
           npm ci
           npm run coverage
           docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f components/serverless/docker-compose.serverless.yml build cvat_ui
-#       - name: Running e2e tests
-#         env:
-#           DJANGO_SU_NAME: 'admin'
-#           DJANGO_SU_EMAIL: 'admin@localhost.company'
-#           DJANGO_SU_PASSWORD: '12qwaszx'
-#           API_ABOUT_PAGE: "localhost:8080/api/v1/server/about"
-#         run: |
-#           docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f components/serverless/docker-compose.serverless.yml -f tests/docker-compose.file_share.yml up -d
-#           /bin/bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' ${API_ABOUT_PAGE})" != "401" ]]; do sleep 5; done'
-#           docker exec -i cvat /bin/bash -c "echo \"from django.contrib.auth.models import User; User.objects.create_superuser('${DJANGO_SU_NAME}', '${DJANGO_SU_EMAIL}', '${DJANGO_SU_PASSWORD}')\" | python3 ~/manage.py shell"
-#           cd ./tests
-#           npm ci
-#           if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
-#             if [ ${{ matrix.specs }} == 'canvas3d_functionality' ] || [ ${{ matrix.specs }} == 'canvas3d_functionality_2' ]; then
-#               npx cypress run --headed --browser chrome --config-file cypress_canvas3d.json --spec 'cypress/integration/${{ matrix.specs }}/**/*.js'
-#             else
-#               npx cypress run --browser chrome --spec 'cypress/integration/${{ matrix.specs }}/**/*.js'
-#             fi
-#             mv ./.nyc_output/out.json ./.nyc_output/out_${{ matrix.specs }}.json
-#           else
-#             if [ ${{ matrix.specs }} == 'canvas3d_functionality' ] || [ ${{ matrix.specs }} == 'canvas3d_functionality_2' ]; then
-#               npx cypress run --headed --browser chrome --env coverage=false --config-file cypress_canvas3d.json --spec 'cypress/integration/${{ matrix.specs }}/**/*.js'
-#             else
-#               npx cypress run --browser chrome --env coverage=false --spec 'cypress/integration/${{ matrix.specs }}/**/*.js'
-#             fi
-#           fi
+      - name: Running e2e tests
+        env:
+          DJANGO_SU_NAME: 'admin'
+          DJANGO_SU_EMAIL: 'admin@localhost.company'
+          DJANGO_SU_PASSWORD: '12qwaszx'
+          API_ABOUT_PAGE: "localhost:8080/api/v1/server/about"
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f components/serverless/docker-compose.serverless.yml -f tests/docker-compose.file_share.yml up -d
+          /bin/bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' ${API_ABOUT_PAGE})" != "401" ]]; do sleep 5; done'
+          docker exec -i cvat /bin/bash -c "echo \"from django.contrib.auth.models import User; User.objects.create_superuser('${DJANGO_SU_NAME}', '${DJANGO_SU_EMAIL}', '${DJANGO_SU_PASSWORD}')\" | python3 ~/manage.py shell"
+          cd ./tests
+          npm ci
+          if [[ ${{ github.ref }} == 'refs/heads/develop' ]]; then
+            if [ ${{ matrix.specs }} == 'canvas3d_functionality' ] || [ ${{ matrix.specs }} == 'canvas3d_functionality_2' ]; then
+              npx cypress run --headed --browser chrome --config-file cypress_canvas3d.json --spec 'cypress/integration/${{ matrix.specs }}/**/*.js'
+            else
+              npx cypress run --browser chrome --spec 'cypress/integration/${{ matrix.specs }}/**/*.js'
+            fi
+            mv ./.nyc_output/out.json ./.nyc_output/out_${{ matrix.specs }}.json
+          else
+            if [ ${{ matrix.specs }} == 'canvas3d_functionality' ] || [ ${{ matrix.specs }} == 'canvas3d_functionality_2' ]; then
+              npx cypress run --headed --browser chrome --env coverage=false --config-file cypress_canvas3d.json --spec 'cypress/integration/${{ matrix.specs }}/**/*.js'
+            else
+              npx cypress run --browser chrome --env coverage=false --spec 'cypress/integration/${{ matrix.specs }}/**/*.js'
+            fi
+          fi
       - name: Creating a log file from "cvat" container logs
         if: failure()
         run: |
@@ -213,7 +213,7 @@ jobs:
   Coveralls:
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
-#     needs: [Unit_testing, E2E_testing]
+    needs: [Unit_testing, E2E_testing]
     steps:
       - uses: actions/checkout@v2
       - name: Getting SHA from the default branch
