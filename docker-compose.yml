@@ -45,7 +45,10 @@ services:
       - migration
 
   migration:
-    build: .
+#     build: .
+    build:
+      context: .
+      dockerfile: Dockerfile1
     image: app
     command: python manage.py migrate
     volumes:
@@ -57,7 +60,10 @@ services:
       - make_migrations
 
   make_migrations:
-    build: .
+#     build: .
+    build:
+      context: .
+      dockerfile: Dockerfile1
     image: app
     command: python manage.py makemigrations
     volumes:
