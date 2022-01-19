@@ -38,7 +38,7 @@ MEDIA_ROOT = BASE_DIR
 #     if isinstance(logger, dict) and "level" in logger:
 #         logger["level"] = "ERROR"
 
-LOGGING["handlers"]["server_file"] = LOGGING["handlers"]["console"]
+# LOGGING["handlers"]["server_file"] = LOGGING["handlers"]["console"]
 
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
