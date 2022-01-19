@@ -34,9 +34,9 @@ os.makedirs(CACHE_ROOT, exist_ok=True)
 MEDIA_ROOT = BASE_DIR
 
 # Suppress all logs by default
-for logger in LOGGING["loggers"].values():
-    if isinstance(logger, dict) and "level" in logger:
-        logger["level"] = "ERROR"
+# for logger in LOGGING["loggers"].values():
+#     if isinstance(logger, dict) and "level" in logger:
+#         logger["level"] = "ERROR"
 
 LOGGING["handlers"]["server_file"] = LOGGING["handlers"]["console"]
 
