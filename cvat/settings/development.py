@@ -28,19 +28,33 @@ SENDFILE_BACKEND = 'sendfile.backends.development'
 #     'PORT': 27017,
 #     }
 # }
+# DATABASES = {
+#    'default': {
+#    'ENGINE': 'djongo',
+#    'NAME': 'new_adas',
+#    'ENFORCE_SCHEMA':False,
+#    'CLIENT':{
+#        'host':'mongodb://admin:pass@local:27017/admin?authSource=admin'
+# }
+# }
+# }
+# ALLOWED_HOSTS=['*']
 DATABASES = {
-   'default': {
-   'ENGINE': 'djongo',
-   'NAME': 'new_adas',
-   'ENFORCE_SCHEMA':False,
-   'CLIENT':{
-       'host':'mongodb://admin:pass@local:27017/admin?authSource=admin'
-}
-}
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'djongo',
+        'ENFORCE_SCHEMA': True,
+        'NAME': 'django_mongodb_docker',
+        'HOST': 'mongodb',
+        'PORT': 27017,
+        'USER': 'root',
+        'PASSWORD': 'mongoadmin',
+        'AUTH_SOURCE': 'admin',
+        'AUTH_MECHANISM': 'SCRAM-SHA-1',
+    }
 }
 ALLOWED_HOSTS=['*']
-
-
 
 # Cross-Origin Resource Sharing settings for CVAT UI
 UI_SCHEME = os.environ.get('UI_SCHEME', 'http')
