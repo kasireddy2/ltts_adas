@@ -9,12 +9,6 @@ DEBUG = True
 
 INSTALLED_APPS += [
     'django_extensions',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
 ]
 
 ALLOWED_HOSTS.append('testserver')
@@ -46,25 +40,6 @@ SENDFILE_BACKEND = 'sendfile.backends.development'
 # }
 # ALLOWED_HOSTS=['*']
 
-ROOT_URLCONF = 'django_mongodb_docker.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-WSGI_APPLICATION = 'django_mongodb_docker.wsgi.application'
 
 DATABASES = {
     'default': {
