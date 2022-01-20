@@ -53,8 +53,8 @@ services:
     image: app
     command: python manage.py migrate
     volumes:
-#       - .:/django_mongodb_docker
-      - .:/cvat      
+      - .:/django_mongodb_docker
+#       - .:/cvat      
     links:
       - cvat_db
     depends_on:
@@ -68,8 +68,8 @@ services:
     image: app
     command: python manage.py makemigrations
     volumes:
-#       - .:/django_mongodb_docker
-      - .:/cvat    
+      - .:/django_mongodb_docker
+#       - .:/cvat    
     links:
       - cvat_db
     depends_on:
