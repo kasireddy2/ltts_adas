@@ -69,18 +69,15 @@ WSGI_APPLICATION = 'django_mongodb_docker.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'ENFORCE_SCHEMA': False,
-        'NAME': 'django_mongodb_docker',  
-        'CLIENT':{
-          'host':'mongodb://root:mongoadmin@local:27017/admin?authSource=admin'
-
-#         'HOST': 'mongodb',
-#         'PORT': 27017,
-#         'USER': 'root',
-#         'PASSWORD': 'mongoadmin',
-#         'AUTH_SOURCE': 'admin',
+#         'ENFORCE_SCHEMA': False,
+        'NAME': 'cvat',  
+        'HOST': 'mongodb',
+        'PORT': 27017,
+        'USER': 'root',
+        'PASSWORD': 'mongoadmin',
+        'AUTH_SOURCE': 'admin',
 #         'AUTH_MECHANISM': 'SCRAM-SHA-1',
-}
+
 }
 }
 ALLOWED_HOSTS=['*']
