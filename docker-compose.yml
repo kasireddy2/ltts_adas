@@ -18,7 +18,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: mongoadmin
-      MONGO_INITDB_DATABASE: django_mongodb_docker
+      MONGO_INITDB_DATABASE: cvat
     ports:
       - 27017:27017
 
@@ -30,7 +30,6 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongoadmin
-      ME_CONFIG_MONGODB_SERVER: cvat_db
 
   web:
     image: app
