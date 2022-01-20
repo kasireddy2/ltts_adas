@@ -79,7 +79,7 @@ DATABASES = {
 #         'USER': 'root',
 #         'PASSWORD': 'mongoadmin',
 #         'AUTH_SOURCE': 'admin',
-        'AUTH_MECHANISM': 'SCRAM-SHA-1',
+#         'AUTH_MECHANISM': 'SCRAM-SHA-1',
 }
 }
 }
