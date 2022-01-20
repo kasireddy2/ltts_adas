@@ -9,6 +9,12 @@ DEBUG = True
 
 INSTALLED_APPS += [
     'django_extensions',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 ALLOWED_HOSTS.append('testserver')
@@ -62,18 +68,20 @@ WSGI_APPLICATION = 'django_mongodb_docker.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'djongo',
-        'ENFORCE_SCHEMA': True,
-        'NAME': 'django_mongodb_docker',
-        'HOST': 'mongodb',
-        'PORT': 27017,
-        'USER': 'root',
-        'PASSWORD': 'mongoadmin',
-        'AUTH_SOURCE': 'admin',
+        'ENFORCE_SCHEMA': False,
+        'NAME': 'django_mongodb_docker',  
+        'CLIENT':{
+          'host':'mongodb://root:mongoadmin@local:27017/admin?authSource=admin'
+
+#         'HOST': 'mongodb',
+#         'PORT': 27017,
+#         'USER': 'root',
+#         'PASSWORD': 'mongoadmin',
+#         'AUTH_SOURCE': 'admin',
         'AUTH_MECHANISM': 'SCRAM-SHA-1',
-    }
+}
+}
 }
 ALLOWED_HOSTS=['*']
 
